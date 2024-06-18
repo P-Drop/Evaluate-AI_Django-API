@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Revision 1{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<div class="container">
+        <div style="text-align: center;">
+            {{ user.username }}
+        </div>
+        <div class="row">
+            <div class="col-2">
+                <a href="/home" class =" btn btn-primary">Volver</a>
+            </div>
+            <div class="col-8"></div>
+            <div class="col-2">
+                <a href="/logout" class =" btn btn-danger">Cerrar Sesión</a>
+            </div>
+        </div>
+    {% else %}
+    <a href="/login" class =" btn btn-primary">Iniciar Sesión</a>
+</div>
+{% endif %}
+<hr>
+{% if datosImagen %}
+<div class="canvas-container">
+
+    <img src={% static datosImagen.nombreImg %} alt="imagenActual" width="900" height="900" class="img-fluid">
+    <canvas id="canvasImg" width="900" height="900" class="canvas img-fluid"></canvas>
+    
+</div>
+<div class="container">
+    <p style="display:none;" id="jsonInf">
+        {{ jsonInf }}
+    </p> 
+</div>
+<div class="container">
+    <p>
+        Imagen {{ datosImagen.id }}
+    </p>
+</div>
+
+<form method="post" action="/crearRev1/">
+    {%  csrf_token %}
+    <input type="hidden" id="datosImagen" name="jsonRevision">
+    <div class="row mb-5">
+        <div class="col-4">
+            {% if primera != True %}
+            <a href="/revision1A" class="btn btn-lg btn-warning"><</a>
+            {% endif %}
+        </div>
+        <div class="col-4">
+            <input type="hidden" id="botonRevisar" class="btn btn-dark btn-lg" value="REVISADA">
+        </div>
+        <div class="col-4">
+            {% if ultima != True %}
+            <a href="/revision1S" class="btn btn-lg btn-warning">></a>
+            {% endif %}
+        </div>
+    </div>
+    
+</form>
+{% else %}
+<div class="container my-5">
+    <b style="font-size: x-large;">El usuario no tiene imagenes por revisar</b>
+</div>
+{% endif %}
+<script src="{% static 'js/revision1.js' %}"></script>
+
+{% endblock %}

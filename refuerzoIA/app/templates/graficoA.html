@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Actividad{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<div class="container">
+        <div class="text-center">
+            {{ user.username }}
+        </div>
+        <div class="row">
+            <div class="col-2">
+                <a href="/estadisticas" class =" btn btn-primary">Volver</a>
+            </div>
+            <div class="col-8"></div>
+            <div class="col-2">
+                <a href="/logout" class =" btn btn-danger">Cerrar Sesión</a>
+            </div>
+        </div>
+    {% else %}
+    <a href="/login" class =" btn btn-primary">Iniciar Sesión</a>
+</div>
+{% endif %}
+<hr>
+{% if user.is_superuser%}
+<div class="canvas-container">
+    <canvas id="grafico" width="900" height="900" class="canvas img-fluid"></canvas>
+</div>
+<button onclick="grafAct()">MOSTRAR</button>
+<!-- <p style="display: none;" id="ejeX">{{ ejeX }}</p>
+<p style="display: none;" id="ejeY">{{ ejeY }}</p> -->
+{% endif%}
+<!-- <script src="{% static 'js/graficos.js' %}"></script> -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+        // Recupera los datos enviados desde la vista
+        var chartData = {{ datos|safe }};
+
+        // Crea el gráfico
+        var ctx = document.getElementById('grafico').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar', // Tipo de gráfico (puedes cambiarlo por 'line', 'pie', etc.)
+            data: {
+                labels: chartData.labels,
+                datasets: [{
+                    label: 'Data',
+                    data: chartData.data,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                // Aquí puedes agregar opciones adicionales para personalizar el gráfico
+            }
+        });
+</script>
+{% endblock %}

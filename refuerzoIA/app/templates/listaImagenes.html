@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Imagenes{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<div class="container">
+        <div class="text-center">
+            {{ user.username }}
+        </div>
+        <div class="row">
+            <div class="col-2">
+                <a href="/home" class =" btn btn-primary">Volver</a>
+            </div>
+            <div class="col-8"></div>
+            <div class="col-2">
+                <a href="/logout" class =" btn btn-danger">Cerrar Sesión</a>
+            </div>
+        </div>
+    {% else %}
+    <a href="/login" class =" btn btn-primary">Iniciar Sesión</a>
+</div>
+{% endif %}
+<hr>
+{% if user.is_superuser %}
+{% if listaImagenes %}
+<div class="container my-5">
+<table class="table table-dark table-striped">
+    <thead>
+        <th>#</th>
+        <th>URL</th>
+        <th>Revisiones Actuales</th>
+        <th>Revisiones Totales</th>
+        <th>Estado</th>
+        <th>Inferencia</th>
+        <th>Imagen</th>
+    </thead>
+    <tbody>
+        {% for im in listaImagenes %}
+        {% if im.numRevisiones == im.maxRevisiones %}
+            <tr class="table-success">
+                <td>{{ im.id }}</td>
+                <td><a href="{% url 'verDatosImagen' %}?dato=url&img={{ im.id }}" class="btn btn-sm btn-warning">VER</a></td>
+                <td>{{ im.numRevisiones }}</td>
+                <td>{{ im.maxRevisiones }}</td>               
+                <td>Completada</td>
+                <td><a href="{% url 'verDatosImagen' %}?dato=inferencia&img={{ im.id }}" class="btn btn-sm btn-warning">VER</a></td>
+                <td><a href="{% url 'verDatosImagen' %}?dato=imagen&img={{ im.id }}" class="btn btn-sm btn-warning">VER</a></td>
+            </tr>
+        {% else %}
+        <tr>
+            <td>{{ im.id }}</td>
+            <td><a href="{% url 'verDatosImagen' %}?dato=url&img={{ im.id }}" class="btn btn-sm btn-warning">VER</a></td>
+            <td>{{ im.numRevisiones }}</td>
+            <td>{{ im.maxRevisiones }}</td>               
+            <td>En revisión</td>
+            <td><a href="{% url 'verDatosImagen' %}?dato=inferencia&img={{ im.id }}" class="btn btn-sm btn-warning">VER</a></td>
+            <td><a href="{% url 'verDatosImagen' %}?dato=imagen&img={{ im.id }}" class="btn btn-sm btn-warning">VER</a></td>
+        </tr>
+        {% endif %}           
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+{% else %}
+<div class="alert alert-primary text-center" role="alert">
+    <div class="row">
+        <div class="col">No hay imagenes que mostrar</div>
+    </div>
+</div>
+{% endif %}
+{% endif%}
+{% endblock %}

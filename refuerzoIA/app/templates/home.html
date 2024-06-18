@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<div class="container">
+    <div class="row">
+        <div style="text-align: center;">
+            {{ user.username }}
+        </div>
+        <div style="text-align: right;">
+            <a href="/logout" class =" btn btn-danger">Cerrar Sesión</a>
+        </div>
+    </div>
+    {% else %}
+    <a href="/login" class =" btn btn-primary">Iniciar Sesión</a>
+</div>
+{% endif %}
+<hr>
+
+{% if msg %}
+<div class="alert alert-success my-4" role="alert">
+    {{ msg }}
+</div>  
+{% endif %}
+
+{% if not user.is_superuser%}
+<div class="container">
+    <div class="row my-3">
+        <div class="col-4"></div>
+        <div class="col-4">
+            <a href="/revision1" class="btn btn-lg btn-primary">REVISION 1</a>
+        </div>
+        <div class="col-4"></div>
+    </div>
+    <div class="row my-3">
+        <div class="col-4"></div>
+        <div class="col-4">
+            <a href="/revision2" class="btn btn-lg btn-primary">REVISION 2</a> 
+        </div>
+        <div class="col-4"></div>
+    </div>
+</div>
+{% else %}
+<div class="container">
+    <div class="container text-center my-3">
+    <a href="/nuevaImgPre" class="btn btn-lg btn-primary">NUEVA IMAGEN</a>
+    </div>
+    <div class="container text-center my-3">
+    <a href="/listaImagenes" class="btn btn-lg btn-primary">IMAGENES</a>
+    </div>
+    <div class="container text-center my-3">
+    <a href="/asignarImgPre" class="btn btn-lg btn-primary">ASIGNAR IMAGENES</a>
+    </div>
+    <div class="container text-center my-3">
+    <a href="/histRevPre" class="btn btn-lg btn-primary">REVISIONES</a>
+    </div>
+    <div class="container text-center my-3">
+    <a href="/usuariosPre" class="btn btn-lg btn-primary">USUARIOS</a>
+    </div>
+    <div class="container text-center my-3">
+    <a href="/estadisticas" class="btn btn-lg btn-primary">ESTADISTICAS</a>
+    </div>  
+</div>
+{% endif%}
+{% endblock %}

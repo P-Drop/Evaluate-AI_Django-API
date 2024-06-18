@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Nueva Imagen{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<div class="container">
+        <div class="text-center">
+            {{ user.username }}
+        </div>
+        <div class="row">
+            <div class="col-2">
+                <a href="/home" class =" btn btn-primary">Volver</a>
+            </div>
+            <div class="col-8"></div>
+            <div class="col-2">
+                <a href="/logout" class =" btn btn-danger">Cerrar Sesión</a>
+            </div>
+        </div>
+    {% else %}
+    <a href="/login" class =" btn btn-primary">Iniciar Sesión</a>
+</div>
+{% endif %}
+<hr>
+{% if user.is_superuser %}
+<div class="container my-5">
+    <h3>Crear nueva imagen</h3>
+    <form action="/nuevaImgPost/" method='post' class="needs-validation" novalidate>
+        {% csrf_token %}
+        <div class="row my-3">
+        <div class="col-7">
+            <label for="nombreImg" class="form-label">Imagen</label>
+            <input type="text" class="form-control" id="nombreImg" name="nombreImg" pattern="^[a-zA-Z0-9\\/._\-]+$" required>
+            <div class="invalid-feedback">
+              Introduce una URL de imagen válida
+            </div>
+        </div>
+        <div class="col-2"></div>
+        <div class="col-3">
+            <label for="revMax" class="form-label">Revisiones</label>
+            <input type="text" class="form-control" id="revMax" name="revMax" pattern="^[1-9]\d*$" required>
+            <div class="invalid-feedback">
+                Introduce un numero entero
+            </div>
+        </div>
+        </div>
+        <div class="row my-4">
+            <label for="jsonImg" class="form-label">Inferencia</label>
+            <textarea type="text" class="form-control" rows="3" id="jsonImg" name="jsonImg" pattern="^[\[\]{},:.\-+*\/a-zA-Z0-9_\s&quot;]*$" required></textarea>
+            <div class="invalid-feedback">
+              El JSON no es válido
+            </div>
+        </div>
+        <input type="submit" class="btn btn-lg btn-dark" value="CREAR">
+    </form>
+</div>
+{% endif%}
+<script src={% static 'js/validacion.js' %}></script>
+{% endblock %}

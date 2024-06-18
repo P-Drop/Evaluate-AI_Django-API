@@ -1,0 +1,6 @@
+venv/*
+refuerzoIA/.env
+refuerzoIA/refuerzoIA/__pycache__/
+refuerzoIA/app/__pycache__
+refuerzoIA/copia_BBDD_inicio
+refuerzoIA/db.sqlite3

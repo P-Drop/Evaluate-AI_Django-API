@@ -1,0 +1,16 @@
+.canvas-container {
+    position: relative;
+    display: inline-block;
+}
+
+.canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    cursor: crosshair;
+    border: 1px solid black;
+}
+
+.prueba {
+    color: red;
+}

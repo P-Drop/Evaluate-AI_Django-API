@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Revisiones{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<div class="container">
+        <div class="text-center">
+            {{ user.username }}
+        </div>
+        <div class="row">
+            <div class="col-2">
+                <a href="/home" class =" btn btn-primary">Volver</a>
+            </div>
+            <div class="col-8"></div>
+            <div class="col-2">
+                <a href="/logout" class =" btn btn-danger">Cerrar Sesión</a>
+            </div>
+        </div>
+    {% else %}
+    <a href="/login" class =" btn btn-primary">Iniciar Sesión</a>
+</div>
+{% endif %}
+<hr>
+{% if user.is_superuser %}
+<div class="container my-5">
+    <form action="/mostrarHistRev/" method='post' class="needs-validation" novalidate>
+        {% csrf_token %}
+        <div class="row my-3">
+        <div class="col-4">
+            <label for="usuarioSel" class="form-label">Usuario</label>
+            <select class="form-select" aria-label="Filtro usuario" id="usuarioSel" name="usuarioSel">
+                <option value="todos">Selecciona un usuario</option>
+                {% for usuario in listaUsuarios%}
+                <option value={{ usuario.username }}>{{ usuario.username }}</option>
+                {% endfor %}
+              </select>
+        </div>
+        <div class="col-2">
+            <label for="fechaDesde" class="form-label">Desde</label>
+            <input type="date" class="form-control" id="fechaDesde" name="fechaDesde">
+        </div>
+        <div class="col-2">
+                <label for="fechaHasta" class="form-label">Hasta</label>
+                <input type="date" class="form-control" id="fechaHasta" name="fechaHasta">
+        </div>
+        <div class="col-2">
+            <label for="estado" class="form-label">Estado</label>
+            <select class="form-select" aria-label="Filtro estado" id="estado" name="estado">
+                <option value="todos"selected>Estado de revision</option>
+                <option value="True">Pendiente</option>
+                <option value="False">Revisada</option>
+              </select>
+        </div>
+        <div class="col-2">
+            <label for="tipo" class="form-label">Tipo</label>
+            <select class="form-select" aria-label="Filtro tipo" id="tipo" name="tipo">
+                <option value="todos" selected>Tipo de revision</option>
+                <option value="False">Click</option>
+                <option value="True">Dibujo</option>
+              </select>
+        </div>
+        </div>
+        <div class="row my-5">
+            <div class="col">
+                <input type="submit" class="btn btn-lg btn-dark" value="BUSCAR">
+            </div>
+        </div>
+    </form>
+</div>
+{% if listaRevisiones %}
+<div class="container my-5">
+<table class="table table-dark table-striped">
+    <thead>
+        <th>#</th>
+        <th>Imagen</th>
+        <th>Usuario</th>
+        <th>Tipo</th>
+        <th>Estado</th>
+        <th>Asignación</th>
+        <th>Revisión</th>
+    </thead>
+    <tbody>
+        {% for rev in listaRevisiones %}
+            <tr>
+                <td>{{ rev.id }}</td>
+                <td>{{ rev.imagen_id }}</td>
+                <td>{{ rev.usuario_id }}</td>
+                <td>{{ rev.tipoRevision }}</td>
+                <td>{{ rev.pendiente }}</td>
+                <td>{{ rev.fechaAsignacion }}</td>
+                <td>{{ rev.fechaRevision }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+{% endif %}
+{% if mensajeE %}
+<div class="alert alert-primary text-center" role="alert">
+    <div class="row">
+        <div class="col">{{ mensajeE }}</div>
+    </div>
+</div>
+{% endif %}
+{% endif%}
+<script src={% static 'js/validacion.js' %}></script>
+{% endblock %}

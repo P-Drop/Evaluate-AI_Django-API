@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/mistylo.css' %}">
+    
+</head>
+<body>
+        <div class="container text-center">
+            <header class="text-primary">
+                <h1>
+                    Refuerzo IA
+                </h1>
+            </header>
+            <hr>
+            <main class="text-secondary">
+                {% block content %}
+                {% endblock %}
+            </main>
+        </div>
+</body>
+</html>

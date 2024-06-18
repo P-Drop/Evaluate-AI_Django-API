@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Datos Imagen{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<div class="container">
+        <div class="text-center">
+            {{ user.username }}
+        </div>
+        <div class="row">
+            <div class="col-2">
+                <a href="/listaImagenes" class =" btn btn-primary">Volver</a>
+            </div>
+            <div class="col-8"></div>
+            <div class="col-2">
+                <a href="/logout" class =" btn btn-danger">Cerrar Sesión</a>
+            </div>
+        </div>
+    {% else %}
+    <a href="/login" class =" btn btn-primary">Iniciar Sesión</a>
+</div>
+{% endif %}
+<hr>
+{% if user.is_superuser %}
+{% if urlImg %}
+<div class="container my-3">
+    <b style="font-size: xx-large;">{{ urlImg }}</b>
+</div>
+{% endif %}
+{% if infImg %}
+<div class="container my-3">
+    <b style="font-size: large">{{ infImg }}</b>
+</div>
+{% endif %}
+{% if img %}
+<div class="container my-3">
+    <img src={% static img %} alt="imagenActual" width="900" height="900" class="img-fluid">
+</div>
+{% endif %}
+{% endif%}
+{% endblock %}

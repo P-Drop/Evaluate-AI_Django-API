@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Usuarios{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<div class="container">
+        <div class="text-center">
+            {{ user.username }}
+        </div>
+        <div class="row">
+            <div class="col-2">
+                <a href="/home" class =" btn btn-primary">Volver</a>
+            </div>
+            <div class="col-8"></div>
+            <div class="col-2">
+                <a href="/logout" class =" btn btn-danger">Cerrar Sesión</a>
+            </div>
+        </div>
+    {% else %}
+    <a href="/login" class =" btn btn-primary">Iniciar Sesión</a>
+</div>
+{% endif %}
+<hr>
+{% if user.is_superuser %}
+<div class="container">
+<form action="/buscarUs/" method='post' class="needs-validation" novalidate>
+    {% csrf_token %}
+    <div class="row my-3">
+    <div class="col-4">
+        <select class="form-select" aria-label="Filtro usuario" id="usuarioSel" name="usuarioSel">
+            <option value="todos">Selecciona un usuario</option>
+            {% for aU in allUsers %}
+            <option value={{ aU.id }}>{{ aU.username }}</option>
+            {% endfor %}
+          </select>
+    </div>
+    <div class="col-6"></div>
+    <div class="col-2">
+        <input type="submit" class="btn btn-secondary" value="BUSCAR">
+    </div>
+</form>
+</div>
+{% if listaUsuarios %}
+<form action="/cambiosUs/" method='post' class="needs-validation" novalidate>
+    {% csrf_token %}
+<table class="table table-dark table-striped">
+    <thead>
+        <th>#</th>
+        <th>Usuario</th>
+        <th>Nombre</th>
+        <th>Registro</th>
+        <th>Ultima Sesión</th>
+        <th>Activo</th>
+        <th>Admin</th>
+    </thead>
+    <tbody>
+        {% for u in listaUsuarios %}
+            <input type="hidden" value={{ u.id }} name="userId">
+            <tr>
+                <td>{{ u.id }}</td>
+                <td>{{ u.username }}</td>
+                <td>{{ u.firs_name }} {{ u.last_name }}</td>
+                <td>{{ u.date_joined }}</td>
+                <td>{{ u.last_login }}</td>
+                <td>
+                    <div class="form-check">
+                        {% if u.is_active %}
+                            <input class="form-check-input" type="checkbox" value={{ u.is_active }} name="uActivo" checked>
+                        {% else %}
+                            <input class="form-check-input" type="checkbox" value={{ u.is_active }} name="uActivo">
+                        {% endif %}
+                    </div>
+                </td>
+                <td>
+                    <div class="form-check">
+                        {% if u.is_superuser %}
+                            <input class="form-check-input" type="checkbox" value="True" name="uAdmin" checked>
+                        {% else %}
+                            <input class="form-check-input" type="checkbox" value="True" name="uAdmin">
+                        {% endif %}
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+<div class="row">
+    <div class="col-2">
+        <a href="/registro" class =" btn btn-success">NUEVO USUARIO</a> 
+    </div>
+    <div class="col-8"></div>
+    <div class="col-2">
+        {% if botonEditar %}
+            <input type="submit" class="btn btn-secondary" value="EDITAR CAMBIOS">
+        {% endif %}
+    </div>
+</form>
+</div>
+{% if mensajeU %}
+<div class="alert alert-primary text-center" role="alert">
+    <div class="row">
+        <div class="col">{{ mensajeU }}</div>
+    </div>
+</div>
+{% endif %}
+{% endif %}
+<script src={% static 'js/validacion.js' %}></script>
+{% endblock %}

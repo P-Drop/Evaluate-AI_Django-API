@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Registro{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<div class="container">
+        <div class="text-center">
+            {{ user.username }}
+        </div>
+        <div class="row">
+            <div class="col-2">
+                <a href="/usuariosPre" class =" btn btn-primary">Volver</a>
+            </div>
+            <div class="col-8"></div>
+            <div class="col-2">
+                <a href="/logout" class =" btn btn-danger">Cerrar Sesión</a>
+            </div>
+        </div>
+    {% else %}
+    <a href="/login" class =" btn btn-primary">Iniciar Sesión</a>
+</div>
+{% endif %}
+<hr>
+{% if user.is_superuser %}
+<form method="post">
+    {% csrf_token %}
+    {% for campo in form %}
+    <p>
+        {{ campo.label_tag }}
+        <br>
+        {{ campo }}
+        {% for error in campo.errors %}
+            <p class="text-danger">{{ error }}</p>
+        {% endfor %}
+    </p>
+    {% endfor %}
+    <button type="submit" class="btn btn-success" >Registrar</button>
+</form>
+{% endif %}
+{% endblock %}
